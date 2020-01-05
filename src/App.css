@@ -1,0 +1,149 @@
+body {
+
+  padding:20px;
+
+}
+
+ 
+
+.game {
+
+  border: 1px solid grey;
+
+  padding:20px;
+
+  background-color:lightgrey
+
+}
+
+ 
+
+.purple{
+
+  background-color:purple;
+
+  color:white;
+
+}
+
+.green {
+
+  background-color:green;
+
+  color:white;
+
+}
+
+.blue {
+
+  background-color:blue;
+
+  color:white;
+
+}
+
+.orange {
+
+  background-color:orange;
+
+}
+
+.yellow {
+
+  background-color:yellow;
+
+}
+
+.pink {
+
+  background-color:pink;
+
+}
+
+ 
+
+select {
+
+  width:100px;
+
+  margin-right:10px;
+
+}
+
+ 
+
+.row {
+
+  height:50px;
+
+  margin-bottom:20px;
+
+  clear:both;
+
+  position: relative;
+
+}
+
+ul {
+
+  padding:0;
+
+  margin:0;
+
+  float:left;
+
+}
+
+li {
+
+  float:left;
+
+  list-style-type:none;
+
+  width:100px;
+
+  margin-right:10px;
+
+}
+
+ul.answer {
+
+  float:left;
+
+ 
+
+}
+
+ul.answer li {
+
+  width:30px;
+
+  border:1px solid grey;
+
+  font-size:.5em
+
+}
+
+.red {
+
+  background-color:red;
+
+}
+
+.white {
+
+  background-color:white;
+
+}
+
+.none {
+
+  background-color:grey;
+
+}
+
+form {
+
+  clear:both;
+
+}
