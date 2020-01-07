@@ -24,6 +24,7 @@ export default class Game extends Component {
     this.submitGuess = this.submitGuess.bind(this);
     this.compareArrays = this.compareArrays.bind(this);
     this.shuffleArray = this.shuffleArray.bind(this);
+    this.resetGame = this.resetGame.bind(this);
   }
   returnColors() {
     return ['purple','green','blue','orange','yellow','pink']
@@ -142,7 +143,14 @@ export default class Game extends Component {
     }
     return arr;
   }
-  
+  resetGame() {
+    this.setState({
+      solutionArr: [],
+      currguess: {},
+      turns:[]
+    });
+    this.setSolutionArr();
+  }
  
   componentDidMount() {
     this.setSolutionArr();
@@ -151,7 +159,7 @@ export default class Game extends Component {
   render() {
     return (
       <div className="game">
-        <button onClick={this.setSolutionArr}>New Game</button>
+        <button onClick={this.resetGame}>New Game</button>
         <br />
         <br />
         {this.state.solutionArr.map(function(color,i) {
@@ -162,10 +170,10 @@ export default class Game extends Component {
         <TurnsHistory turns={this.state.turns} />
         <br />
         <form onSubmit={this.submitGuess}>
-        {this.buildGuessOptions()}
-        <br />
-        <br />
-        <button>submit guess</button>
+          {this.buildGuessOptions()}
+          <br />
+          <br />
+          <button>submit guess</button>
         </form>
       </div>
     );
