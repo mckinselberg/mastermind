@@ -1,149 +1,180 @@
+* {  
+  transition: all 1s;
+}
 body {
-
-  padding:20px;
-
+  margin:5% 5% 5% 5%;
 }
-
- 
-
-.game {
-
-  border: 1px solid grey;
-
-  padding:20px;
-
-  background-color:lightgrey
-
-}
-
- 
-
-.purple{
-
-  background-color:purple;
-
-  color:white;
-
-}
-
-.green {
-
-  background-color:green;
-
-  color:white;
-
-}
-
-.blue {
-
-  background-color:blue;
-
-  color:white;
-
-}
-
-.orange {
-
-  background-color:orange;
-
-}
-
-.yellow {
-
-  background-color:yellow;
-
-}
-
-.pink {
-
-  background-color:pink;
-
-}
-
- 
-
-select {
-
-  width:100px;
-
-  margin-right:10px;
-
-}
-
- 
-
-.row {
-
-  height:50px;
-
-  margin-bottom:20px;
-
-  clear:both;
-
-  position: relative;
-
-}
-
-ul {
-
-  padding:0;
-
+#root {
   margin:0;
-
-  float:left;
-
+  padding:0;
 }
-
-li {
-
-  float:left;
-
-  list-style-type:none;
-
-  width:100px;
-
-  margin-right:10px;
-
+h1 {
+  color:slategrey;
+  text-align: center;
+  margin-top:-2.6em;
+  margin-bottom:1em;
+  font-size:1.5em;
 }
-
-ul.answer {
-
-  float:left;
-
- 
-
+.game {
+  width:calc(28%);
+  margin:0 auto;
+  border: 1px solid lightslategrey;
+  padding:2% 2% 2% 2%;
+  background-color:lightgrey;
+  border-radius:25px;
 }
-
-ul.answer li {
-
-  width:30px;
-
-  border:1px solid grey;
-
-  font-size:.5em
-
+@media (max-width: 1000px) {
+  .game {
+    width:calc(35%);
+  }
 }
-
-.red {
-
-  background-color:red;
-
+@media (max-width: 768px) {
+  h1 {
+    margin-top:-2em;
+  }
+  .game {
+    margin-top:45px;
+    width:calc(90%);
+    padding:2%;
+  }
 }
-
-.white {
-
+button {
+  width:auto;
+  border:1px solid lightslategray;
+  margin:0 auto;
+  display:block;
+  background-color:lightslategrey;
+  color:white;
+  padding:10px;
+  border-radius: 5px;
+  transition:all 2s;
+}
+button:active {
+  color:lightslategrey;
   background-color:white;
-
 }
-
+ 
+.purple {
+  background-color:purple;
+}
+.green {
+  background-color:green;
+}
+.blue {
+  background-color:blue;
+}
+.orange {
+  background-color:orange;
+}
+.yellow {
+  background-color:yellow;
+}
+.pink {
+  background-color:pink;
+}
 .none {
-
-  background-color:grey;
-
+  background-color:lightgrey;
 }
-
+.aqua {
+  background-color:aqua;
+}
+.salmon {
+  background-color:salmon;
+}
 form {
-
+  text-align:center;
+  width:auto;
+  margin:0 auto;
+  display:block;
+}
+select {
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  margin-right:10px;
+  font-size:0em;
+}
+option {
+  font-size:1em;
+}
+ 
+h2 {
+  margin:0px 0;
+  padding:0;
+  font-size:1.2em;
+  text-align: center;
+  font-family:Arial, Helvetica, sans-serif;
+  color:slategray
+}
+.row {
+  height:auto;
+  margin-top:10px;
   clear:both;
-
+  position: relative;
+  border-bottom:1px solid lightslategrey;
+}
+ul.guesses {
+  width:80%;
+  padding:0;
+  margin:0 auto;
+  text-align: center;
+ 
+}
+ul.guesses li {
+  display:inline-block;
+  list-style-type:none;
+  width:40px;
+  height:40px;
+  border:1px solid lightslategray;
+  border-radius:50%;
+  margin-right:2%;
+  font-size:.7em;
+  font-size:0em;
+}
+@media (max-width: 800px) {
+  ul.guesses {
+  }
+  ul.guesses li {
+    width:30px;
+    height:30px;
+  }
+}
+ 
+ul.answer {
+  margin:0px 0;
+  width:100%;
+  padding:0;
+  text-align: center;
+}
+ul.answer li {
+  display:inline-block;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  border:1px solid grey;
+  font-size:.5em;
+  font-size:0em;
+  margin-bottom:10px;
+  margin-right:1%;
+}
+ 
+@media (max-width: 800px) { 
+  ul.answer {
+  }
+  ul.answer li {
+    width:10px;
+    height:10px;
+  }
+}
+.red {
+  background-color:red;
+}
+.white {
+  background-color:white;
+}
+ul.answer li.none {
+  background-color:grey;
+}
+form {
+  clear:both;
 }

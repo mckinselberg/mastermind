@@ -29,9 +29,10 @@ export default class TurnsHistory extends Component {
         this.props.turns.map(function(turn,i) {
           return (
             <div className="row" key={i}>
-              <ul key={`guess-${i}`}>
+              <h2 key={`turn-${i}`}>{i+1}</h2>
+              <ul key={`guess-${i}`} className="guesses">
                 {turn.guess.map(function(guess,i) {
-                  console.log(guess);
+                  //console.log(guess);
                   return <li className={guess} key={i}>{guess}</li>
                 })}
               </ul>

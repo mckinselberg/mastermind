@@ -7,8 +7,9 @@ export default class Game extends Component {
     super(props)
     this.state = {
       solutionArr: [],
-      currguess: {},
-      turns:[]
+      currGuess: {},
+      turns:[],
+      turnsAllowed:7
       /*
       turns: [{
         no:0,
@@ -27,7 +28,7 @@ export default class Game extends Component {
     this.resetGame = this.resetGame.bind(this);
   }
   returnColors() {
-    return ['purple','green','blue','orange','yellow','pink']
+    return ['purple','green','blue','orange','yellow','salmon']; //'aqua',]; //'pink']
   }
  
   returnRandomValFromArr(arr) {
@@ -39,7 +40,7 @@ export default class Game extends Component {
   setSolutionArr() {
     let arr = this.returnColors().slice(0);
     let solutionArr = [];
-    for (let i = 0; i <= 3; i++) {
+    for (let i = 0; i < 4; i++) {
       let random = this.returnRandomValFromArr(arr);
       solutionArr.push(random);
       arr.splice(arr.indexOf(random), 1)
@@ -49,39 +50,55 @@ export default class Game extends Component {
   buildGuessOptions() {
     let guessOpts = [];
     let colors = this.returnColors().slice(0);
+    
     for (let i = 0; i < 4; i++) {
       guessOpts.push(
-        <select name={i} key={i} onChange={this.handleGuessOptionChange} className={this.state.currguess[i]}>
-          <option></option>
-          <option value="none">none</option>
+        <select name={i} key={i} onChange={this.handleGuessOptionChange} className={this.state.currGuess[i]}>
+          <option className="white" value="empty"></option>
+          <option className="none" value="none">none</option>
           {colors.map(function(color,i) {
             return <option className={color} key={i} value={color}>{color}</option>
           })}
         </select>
       )
     }
+    /*
+    for (let i = 0; i < 4; i++) {
+      guessOpts.push(
+        <div key={i} className={`custom-select ${this.state.currGuess[i]}`}>
+          {colors.map(function(color,i) {
+            return <div key={i} className={color}></div>
+          })}
+        </div>
+      )
+    }
+    */
     return guessOpts;
   }
   handleGuessOptionChange(e) {
     let selectName = e.target.getAttribute('name');
-    let currguessState = this.state.currguess;
-    //console.log(currguessState);
+    let currGuessState = this.state.currGuess;
+    //console.log(currGuessState);
     //record the guess as an object in state
-    this.setState({
-      currguess:{
-        ...currguessState,
-        ...{[selectName] : e.target.value}
-      }
-    })
+    //if (e.target.value !== "") {
+      this.setState({
+        currGuess:{
+          ...currGuessState,
+          ...{[selectName] : e.target.value}
+        }
+      })
+    //}
   }
   submitGuess(e) {
     e.preventDefault();
  
-    if (Object.keys(this.state.currguess).length < 4) {
+    //if (Object.keys(this.state.currGuess).length < 4) {
+      let guessArrFromObj = Object.values(this.state.currGuess);
+    
+    if (guessArrFromObj.includes("empty") || Object.keys(this.state.currGuess).length < 4) {
       alert('Please select 4 colors');
     } else {
       //convert guess object to an array
-      let guessArrFromObj = Object.values(this.state.currguess);
       let answerArr = this.compareArrays(this.state.solutionArr,guessArrFromObj);
       let shuffledAnswer = this.shuffleArray(answerArr);
       let turnNo = Object.keys(this.state.turns).length || 0;
@@ -90,6 +107,9 @@ export default class Game extends Component {
         guess: guessArrFromObj,
         answer: shuffledAnswer
       };
+      if (turnNo >= this.state.turnsAllowed) {
+        alert(`You're out of turns. :(`);
+      } else {
       // turn object
       /*
       let turnObj = {
@@ -98,15 +118,23 @@ export default class Game extends Component {
         answer: []
         
       }*/
-      if (shuffledAnswer === ['red','red','red','red']) {
-        alert(`yay! You won in ${currTurn.no + 1} turn${currTurn.no === 0 ? '' : 's'}!`)
+        this.setState({
+          turns:[
+            ...this.state.turns,
+            currTurn
+          ]
+        });
+      
+ 
+        //check for winner
+        const winner = ['red','red','red','red'];
+        //compares the winner array with the shuffledAnswer array
+        let isWinner = (array1, array2) => array1.length === array2.length && array1.sort().every((value, index) => value === array2[index])
+        
+        if (isWinner(winner,shuffledAnswer)) {
+          alert(`yay! You won in ${currTurn.no + 1} turn${currTurn.no === 0 ? '' : 's'}!`);
+        }
       }
-      this.setState({
-        turns:[
-          ...this.state.turns,
-          currTurn
-        ]
-      });
     }
     
   }
@@ -146,7 +174,7 @@ export default class Game extends Component {
   resetGame() {
     this.setState({
       solutionArr: [],
-      currguess: {},
+      currGuess: {},
       turns:[]
     });
     this.setSolutionArr();
@@ -159,23 +187,21 @@ export default class Game extends Component {
   render() {
     return (
       <div className="game">
+        <h1>Mastermind</h1>
         <button onClick={this.resetGame}>New Game</button>
-        <br />
-        <br />
-        {this.state.solutionArr.map(function(color,i) {
+        {/*this.state.solutionArr.map(function(color,i) {
           //return <li key={i}>{color}</li>
-        })}
-        <br />
-        <br />
+        })*/}
         <TurnsHistory turns={this.state.turns} />
         <br />
         <form onSubmit={this.submitGuess}>
           {this.buildGuessOptions()}
-          <br />
-          <br />
-          <button>submit guess</button>
+          <div style={{marginTop:"20px"}}>
+            <button>Submit Guess</button>
+          </div>
         </form>
       </div>
     );
   }
 }
+ 
