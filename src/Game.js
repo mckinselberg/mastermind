@@ -6,10 +6,13 @@ export default class Game extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      isNewGame:true,
       solutionArr: [],
       currGuess: {},
       turns:[],
-      turnsAllowed:7
+      showDiffOptions:false,
+      turnsAllowed:8,
+      noOfColors:6
       /*
       turns: [{
         no:0,
@@ -18,6 +21,8 @@ export default class Game extends Component {
       }]
       */
     }
+    
+    //method bindings
     this.returnColors = this.returnColors.bind(this);
     this.setSolutionArr = this.setSolutionArr.bind(this);
     this.buildGuessOptions = this.buildGuessOptions.bind(this);
@@ -26,9 +31,13 @@ export default class Game extends Component {
     this.compareArrays = this.compareArrays.bind(this);
     this.shuffleArray = this.shuffleArray.bind(this);
     this.resetGame = this.resetGame.bind(this);
+    this.showDiffOptions = this.showDiffOptions.bind(this);
+    this.setDiffOptions = this.setDiffOptions.bind(this);
+    this.cancelDiffOptions = this.cancelDiffOptions.bind(this);
+    this.resetInputs = this.resetInputs.bind(this);
   }
   returnColors() {
-    return ['purple','green','blue','orange','yellow','salmon']; //'aqua',]; //'pink']
+    return ['purple','green','blue','orange','yellow','salmon','aqua','maroon'].slice(0,this.state.noOfColors);
   }
  
   returnRandomValFromArr(arr) {
@@ -172,36 +181,93 @@ export default class Game extends Component {
     return arr;
   }
   resetGame() {
+    let self = this;
     this.setState({
+      isNewGame:true,
       solutionArr: [],
       currGuess: {},
       turns:[]
     });
     this.setSolutionArr();
+    setTimeout(function(){
+      self.setState({isNewGame:false})
+    },1000)
+    
+  }
+  showDiffOptions() {
+    this.setState({
+      showDiffOptions:!this.state.showDiffOptions
+    })
+  }
+  setDiffOptions(e) {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    let turns = data.get('turns');
+    let colors = data.get('colors');
+    let onlyNumbers = /[123456789]/;
+    if (colors < 1 || turns < 4 || !onlyNumbers.test(colors) || !onlyNumbers.test(turns)) {
+      alert('pick up to 8 colors and at least 4 turns');
+    } else {
+      this.setState({
+        turnsAllowed: turns,
+        noOfColors: colors,
+        showDiffOptions:!this.state.showDiffOptions
+      });
+      this.resetInputs();
+    }
+    this.resetGame(); 
+  }
+  cancelDiffOptions() {
+    this.setState({showDiffOptions:!this.state.showDiffOptions})
+    this.resetInputs();
+  }
+  resetInputs() {
+    document.getElementsByName('colors')[0].value="";
+    document.getElementsByName('turns')[0].value="";
   }
  
   componentDidMount() {
+    let self = this;
     this.setSolutionArr();
+    setTimeout(function(){
+      self.setState({isNewGame:false})
+    },1000)
   }
  
   render() {
     return (
-      <div className="game">
-        <h1>Mastermind</h1>
-        <button onClick={this.resetGame}>New Game</button>
-        {/*this.state.solutionArr.map(function(color,i) {
-          //return <li key={i}>{color}</li>
-        })*/}
-        <TurnsHistory turns={this.state.turns} />
-        <br />
-        <form onSubmit={this.submitGuess}>
-          {this.buildGuessOptions()}
-          <div style={{marginTop:"20px"}}>
-            <button>Submit Guess</button>
+      <div>
+        <div className={`modal ${this.state.showDiffOptions ? `` : `hidden` }`}>
+          <form onSubmit={this.setDiffOptions}>
+            # of colors ({this.state.noOfColors})<br />
+            <input name="colors" ref={this.colorInput}></input>
+            <br/>
+            # of turns ({this.state.turnsAllowed})<br />
+            <input name="turns" ref={this.turnsInput}></input>
+            <button>Submit</button>
+          </form>
+          <button onClick={this.cancelDiffOptions}>Cancel</button>
+        </div>
+        <div className="game">
+            <h1 className={this.state.isNewGame === true ? `new-game` : ``}>Mastermind</h1>
+          <div className="button-container">
+            <button onClick={this.resetGame}>New Game</button>
+            <button onClick={this.showDiffOptions}>difficulty</button>
           </div>
-        </form>
+          {/*this.state.solutionArr.map(function(color,i) {
+            //return <li key={i}>{color}</li>
+          })*/}
+          <TurnsHistory turns={this.state.turns} />
+          <br />
+          <form onSubmit={this.submitGuess}>
+            {this.buildGuessOptions()}
+            <div style={{marginTop:"20px"}}>
+              <button>Submit Guess</button>
+            </div>
+          </form>
+        </div>
+        <br />
       </div>
     );
   }
 }
- 
